@@ -1,0 +1,9 @@
+work
+*.ini
+*.wlf
+transcript
+*.out
+build
+
+
+*.pyc
