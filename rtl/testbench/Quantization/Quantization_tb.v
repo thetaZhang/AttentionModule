@@ -37,7 +37,7 @@ task generate_test_data;
   real tmp;
   begin
     integer_part = 18'b000000000010110100;
-    decimal_part = 16'b1011001000000000;
+    decimal_part = 16'b1011001110000000;
     tmp = (1 << 16);
     data_real = integer_part + decimal_part / tmp;
 
