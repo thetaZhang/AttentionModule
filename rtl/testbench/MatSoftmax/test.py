@@ -25,21 +25,18 @@ def matrix_multiply(matrix_a, matrix_b):
                 result[i][j] += matrix_a[i][k] * matrix_b[k][j]
     return result
 
-# 生成两个 4x4 的 16 位二进制矩阵
-matrix_1 = generate_matrix(4, 4, 10)
-matrix_2 = generate_matrix(4, 2, 10)
+
+matrix_1 = generate_matrix(8, 8, 12)
 
 # 展平矩阵为向量
 vector_1 = flatten_matrix(matrix_1)
-vector_2 = flatten_matrix(matrix_2)
+
 
 print("Matrix 1:")
 for row in matrix_1:
     print(row)
 
-print("\nMatrix 2:")
-for row in matrix_2:
-    print(row)
+
 
 #print("\nFlattened Vector 1:", vector_1)
 #print("Flattened Vector 2:", vector_2)
@@ -49,9 +46,6 @@ with open("test_data1.txt", "w") as f:
     for num in vector_1:
         f.write(f"{num}\n")
 
-with open("test_data2.txt", "w") as f:
-    for num in vector_2:
-        f.write(f"{num}\n")
 
 float_matrix_1 = [[fixed_point_to_float(bit) for bit in row] for row in matrix_1]
 float_matrix_2 = [[fixed_point_to_float(bit) for bit in row] for row in matrix_2]

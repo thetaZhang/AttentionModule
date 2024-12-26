@@ -1,4 +1,4 @@
-// FPMac_tb.v
+// Transpose_tb.v
 `timescale 1ns/1ps
 `include "../../Transpose.v"
 

@@ -11,19 +11,16 @@ module Min#(
   output [DATA_WIDTH - 1 : 0] out
 );
 
-wire [DATA_WIDTH - 1 : 0] in_vector [0 : DATA_LENGTH];
+wire [DATA_WIDTH - 1 : 0] in_scan_min [0 : DATA_LENGTH];
 
 genvar i;
 generate
   for (i = 0; i < DATA_LENGTH; i = i + 1)
-    assign in_vector[i] = in[DATA_WIDTH * (i + 1) - 1 : DATA_WIDTH * i];
+    assign in_scan_min[i] = (i == 0) ? in[DATA_WIDTH * (i + 1) - 1 : DATA_WIDTH * i] : 
+    (in_scan_min[i - 1] <= in[DATA_WIDTH * (i + 1) - 1 : DATA_WIDTH * i]) ? in_scan_min[i - 1] : 
+    in[DATA_WIDTH * (i + 1) - 1 : DATA_WIDTH * i];
 endgenerate
 
-generate
-  if (DATA_LENGTH == 1) 
-    
-  
-endgenerate
-
+assign out = in_scan_min[DATA_LENGTH - 1];
 
 endmodule
