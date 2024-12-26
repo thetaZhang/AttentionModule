@@ -25,25 +25,14 @@ def matrix_multiply(matrix_a, matrix_b):
                 result[i][j] += matrix_a[i][k] * matrix_b[k][j]
     return result
 
-def softmax_simple(x):
-  def softmax_simple_row(row):
-    return [(i-min(row))*(i-min(row)) for i in row]
-
-  return [softmax_simple_row(row) for row in x]
+#转置
+def transpose_matrix(matrix):
+    return [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix[0]))]
 
 
+data_1 = [format(random.randint(0, 2**16 - 1), '016b') for _ in range(8)]
 
-
-matrix_1 = generate_matrix(8, 8, 10)
-
-# 展平矩阵为向量
-vector_1 = flatten_matrix(matrix_1)
-
-
-print("Matrix 1:")
-for row in matrix_1:
-    print(row)
-
+print("data_1:", data_1)
 
 
 #print("\nFlattened Vector 1:", vector_1)
@@ -51,22 +40,28 @@ for row in matrix_1:
 
 # 将数据写入文件
 with open("test_data1.txt", "w") as f:
-    for num in vector_1:
+    for num in data_1:
         f.write(f"{num}\n")
 
+# 将二进制字符串转换为整数
+int_data = [int(b, 2) for b in data_1]
 
-float_matrix_1 = [[fixed_point_to_float(bit) for bit in row] for row in matrix_1]
+# 找到最小值
+min_value = min(int_data)
+
+min_data = format(min_value, '016b')
+
+print("min_data:", min_data)
+
+result = subprocess.run(["iverilog -o tb.out Min_tb.v -I ../..; vvp -n tb.out"], shell=True,capture_output=True, text=True)
+
+print(result.stdout)
+
+res_value = int(result.stdout, 2)
+
+if res_value == min_value:
+    print("Test passed!")
+else:
+    print("Test failed!")
 
 
-print("\nFloat Matrix 1:")
-for row in float_matrix_1:
-    print(row)
-
-mat_mm=softmax_simple(float_matrix_1)
-
-print("\nsoftmax Matrix 1:")
-for row in mat_mm:
-    print(row)
-
-
-result = subprocess.run(["iverilog -o tb.out MatSoftmax_tb.v -I ../..; vvp -n tb.out"], shell=True)

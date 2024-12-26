@@ -21,25 +21,3 @@ def softmax_simple(x):
 
   return [softmax_simple_row(row) for row in x]
 
-def generate_matrix(rows, cols, bit_width):
-    return [[format(random.randint(0, 2**bit_width - 1), f'0{bit_width}b') for _ in range(cols)] for _ in range(rows)]
-
-
-# 将定点数转换为浮点数
-def fixed_point_to_float(binary_str):
-    int_part = int(binary_str[:-8], 2)
-    frac_part = int(binary_str[-8:], 2)
-    return int_part + frac_part / (2**8)
-
-
-matrix_1 = generate_matrix(8, 8, 10)
-
-
-matrix = [[round(fixed_point_to_float(bit), 4)  for bit in row] for row in matrix_1]
-
-print("Matrix:", matrix)
-print("Softmax_torch:", softmax_torch(matrix))
-print("Softmax_list:", softmax_list(matrix))
-print("Softmax_simple:", softmax_simple(matrix))
-
-

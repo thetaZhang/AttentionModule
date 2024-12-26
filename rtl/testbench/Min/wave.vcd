@@ -1,0 +1,58 @@
+$date
+	Thu Dec 26 10:52:32 2024
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module Min_tb $end
+$var wire 16 ! out_data [15:0] $end
+$var reg 128 " in_data_1 [127:0] $end
+$scope begin genblk1[0] $end
+$upscope $end
+$scope begin genblk1[1] $end
+$upscope $end
+$scope begin genblk1[2] $end
+$upscope $end
+$scope begin genblk1[3] $end
+$upscope $end
+$scope begin genblk1[4] $end
+$upscope $end
+$scope begin genblk1[5] $end
+$upscope $end
+$scope begin genblk1[6] $end
+$upscope $end
+$scope begin genblk1[7] $end
+$upscope $end
+$scope module DUT $end
+$var wire 128 # in [127:0] $end
+$var wire 16 $ out [15:0] $end
+$scope begin genblk1[0] $end
+$upscope $end
+$scope begin genblk1[1] $end
+$upscope $end
+$scope begin genblk1[2] $end
+$upscope $end
+$scope begin genblk1[3] $end
+$upscope $end
+$scope begin genblk1[4] $end
+$upscope $end
+$scope begin genblk1[5] $end
+$upscope $end
+$scope begin genblk1[6] $end
+$upscope $end
+$scope begin genblk1[7] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b1001111 $
+b10111110111001000000000001001111011111100010111100101110010111100101111001000001111011101100011010100110011111100100111000110011 #
+b10111110111001000000000001001111011111100010111100101110010111100101111001000001111011101100011010100110011111100100111000110011 "
+b1001111 !
+$end
+#20000
