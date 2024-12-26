@@ -21,7 +21,7 @@ module Softmax#(
   Min#(
     .DATA_WIDTH(INPUT_DATA_WIDTH),
     .DATA_LENGTH(DATA_LENGTH)
-  ) input_min(
+  ) InputMin(
     .in(in),
     .out(in_min)
   );
@@ -39,7 +39,7 @@ module Softmax#(
       .INPUT_DECIMAL_WIDTH(2*INPUT_DATA_WIDTH/2),
       .OUTPUT_INTEGER_WIDTH(OUTPUT_DATA_WIDTH/2),
       .OUTPUT_DECIMAL_WIDTH(OUTPUT_DATA_WIDTH/2)
-      ) quantization(
+      ) QuantizationUnit(
         .in(in_qua),
         .out(out_qua)
       );

@@ -57,7 +57,7 @@ Quantization #(
   .INPUT_DECIMAL_WIDTH(2*INPUT_DATA_WIDTH/2),
   .OUTPUT_INTEGER_WIDTH(OUTPUT_DATA_WIDTH/2),
   .OUTPUT_DECIMAL_WIDTH(OUTPUT_DATA_WIDTH/2)
-) quantization(
+) QuantizationUnit(
   .in(acc_scan[DATA_LENGTH - 1]),
   .out(out)
 );

@@ -55,7 +55,7 @@ generate
         .INPUT_DATA_WIDTH(INPUT_DATA_WIDTH),
         .OUTPUT_DATA_WIDTH(OUTPUT_DATA_WIDTH),
         .DATA_LENGTH(COL_1)
-      ) mac(
+      ) MacUnit(
         .in_1(in_row_1[i]),
         .in_2(in_col_2[j]),
         .out(out_mat[i][j])

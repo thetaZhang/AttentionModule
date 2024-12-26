@@ -25,7 +25,7 @@ generate
       .INPUT_DATA_WIDTH(INPUT_DATA_WIDTH),
       .OUTPUT_DATA_WIDTH(OUTPUT_DATA_WIDTH),
       .DATA_LENGTH(COL_IN)
-    ) softmax_row(
+    ) SoftmaxRow(
       .in(in_row),
       .out(out_row)
     );
