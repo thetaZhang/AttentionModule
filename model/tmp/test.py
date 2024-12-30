@@ -2,6 +2,8 @@ import random
 import subprocess
 import math
 
+from golden_model import Attention_golden_model
+
 # 生成一个 4x4 的 16 位二进制矩阵
 def generate_matrix(rows, cols, bit_width):
     return [[format(random.randint(0, 2**bit_width - 1), f'0{bit_width}b') for _ in range(cols)] for _ in range(rows)]
@@ -27,9 +29,9 @@ def fixed_point_quantization(float_num,int_bit,frac_bit):
     quantize float number to fixed point, the same way as in verilog
     """
     if float_num > (2**(int_bit+frac_bit-1)/2**frac_bit):
-        return 2**(int_bit+frac_bit)-1
+        return (2**(int_bit+frac_bit)-1)/2**frac_bit
     elif math.floor(float_num*(2**frac_bit)+0.5) /2**frac_bit > (2**(int_bit+frac_bit-1)/2**frac_bit):
-        return 2**(int_bit+frac_bit)-1
+        return (2**(int_bit+frac_bit)-1)/2**frac_bit
     else :
         return math.floor(float_num*(2**frac_bit)+0.5) /2**frac_bit
 
@@ -55,9 +57,9 @@ def transpose_matrix(matrix):
 
 
 
-matrix_Q = generate_matrix(8, 4, 8)
-matrix_K = generate_matrix(8, 4, 8)
-matrix_V = generate_matrix(8, 4, 8)
+matrix_Q = generate_matrix(8, 4, 11)
+matrix_K = generate_matrix(8, 4, 11)
+matrix_V = generate_matrix(8, 4, 11)
 
 # 展平矩阵为向量
 vector_Q = flatten_matrix(matrix_Q)
@@ -68,18 +70,7 @@ vector_V = flatten_matrix(matrix_V)
 #print("\nFlattened Vector 1:", vector_1)
 #print("Flattened Vector 2:", vector_2)
 
-# 将数据写入文件
-with open("./testbench/top/Q_data.txt", "w") as f:
-    for num in vector_Q :
-        f.write(f"{num}\n")
 
-with open("./testbench/top/K_data.txt", "w") as f:
-    for num in vector_K :
-        f.write(f"{num}\n")
-
-with open("./testbench/top/V_data.txt", "w") as f:
-    for num in vector_V :
-        f.write(f"{num}\n")
 
 
 
@@ -114,9 +105,15 @@ for row in output_matrix:
     print(row)
 
 
-result = subprocess.run(["vlog.exe -quiet testbench/top/top_tb.v;vsim.exe -quiet -c -voptargs=+acc +test_times=1 top_tb -do \"run -all\""], shell=True)
+#result = subprocess.run(["vlog.exe -quiet testbench/top/top_tb.v;vsim.exe -quiet -c -voptargs=+acc +test_times=1 top_tb -do \"run -all\""], shell=True)
 
 
-print("\nFloat Matrix Output:")
-for row in output_matrix:
+golden_model = Attention_golden_model()
+
+new_out=golden_model.attention_compute(matrix_Q, matrix_K, matrix_V)
+
+print("\nnew Float Matrix Output:")
+for row in new_out:
     print(row)
+
+print(new_out == output_matrix)

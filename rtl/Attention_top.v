@@ -1,11 +1,12 @@
 // Attention_top.v
 // attention top module
 
+/*
 `include "Dff.v"
 `include "QKMatMul.v"
 `include "AttnSoftmax.v"
 `include "SVMatMul.v"
-
+*/
 module Attention_top#(
   parameter DATA_WIDTH = 16,// 8 MSBs integer part, 8 LSBs decimal part
   parameter TOKEN_DIM = 4,

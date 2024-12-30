@@ -72,26 +72,66 @@ Attention_top #(
 integer index = 0;
 integer jndex = 0;
 
+integer test_times = 1;
+integer test_index = 0;
+
+integer fd_K, fd_Q, fd_V;
+integer err_K, err_Q, err_V;
+integer code_K, code_Q, code_V;
+
+reg [639 : 0] str_K, str_Q, str_V;
+
 initial begin
+
+  $value$plusargs("test_times=%d", test_times);
+
   rst_n = 0;
   clk = 0;
   #5
   rst_n = 1;
 
-  $readmemb("./testbench/top/Q_data.txt", Q);
-  $readmemb("./testbench/top/K_data.txt", K);
-  $readmemb("./testbench/top/V_data.txt", V);
+  fd_K = $fopen("./testbench/top/K_data.txt", "r");
+  err_K = $ferror(fd_K, str_K);
+  fd_Q = $fopen("./testbench/top/Q_data.txt", "r");
+  err_Q = $ferror(fd_Q, str_Q);
+  fd_V = $fopen("./testbench/top/V_data.txt", "r");
+  err_V = $ferror(fd_V, str_V);
 
-  #10 
+  for (test_index = 0; test_index <test_times + 3; test_index = test_index + 1) begin
+    if (test_index < test_times) begin 
+      if (!err_K && !err_Q && !err_V) begin
+        for (index = 0; index < `TOKEN_DIM * `TOKEN_NUM; index = index + 1) begin
+          code_K = $fscanf(fd_K, "%b", K[index]);
+          code_Q = $fscanf(fd_Q, "%b", Q[index]);
+          code_V = $fscanf(fd_V, "%b", V[index]);
+        end
+      end
+    end
 
-  clk = 1;
-  #5
-  clk = 0;
+    #5 clk = 1;
+    #5 clk = 0;
 
-  #5 
-  clk = 1;
-  #5
-  clk = 0;
+    $display("clock period %d", test_index+1);
+    $display("out binary:");
+    for (index = 0; index < `TOKEN_NUM; index = index + 1) begin
+      $write("[");
+      for (jndex = 0; jndex < `TOKEN_DIM; jndex = jndex + 1)begin
+        $write("%b, ",out_mat[index][jndex]);
+      end
+      $write("]\n");
+    end
+
+    $display("out:");
+    for (index = 0; index < `TOKEN_NUM; index = index + 1) begin
+      $write("[");
+      for (jndex = 0; jndex < `TOKEN_DIM; jndex = jndex + 1)begin
+        $write("%.8f, ",out_mat[index][jndex][15 : 8] + out_mat[index][jndex][7 : 0] / tmp);
+      end
+      $write("]\n");
+    end
+    
+  end
+  /*
   $display("A:");
   for (index = 0; index < `TOKEN_NUM; index = index + 1) begin
     for (jndex = 0; jndex < `TOKEN_NUM; jndex = jndex + 1)begin
@@ -100,10 +140,6 @@ initial begin
     $write("\n");
     end
 
-  #5
-  clk = 1;
-  #5
-  clk = 0;
   $display("S:");
   for (index = 0; index < `TOKEN_NUM; index = index + 1) begin
     for (jndex = 0; jndex < `TOKEN_NUM; jndex = jndex + 1)begin
@@ -111,20 +147,8 @@ initial begin
     end
     $write("\n");
     end
+    */
 
-  #5
-  clk = 1;
-  #5
-  clk = 0;
-
-  $display("out:");
-  
-  for (index = 0; index < `TOKEN_NUM; index = index + 1) begin
-    for (jndex = 0; jndex < `TOKEN_DIM; jndex = jndex + 1)begin
-      $write("%f ",out_mat[index][jndex][15 : 8] + out_mat[index][jndex][7 : 0] / tmp);
-    end
-    $write("\n");
-    end
   #5 $finish;
 end
 

@@ -4,7 +4,7 @@ import math
 from functools import partial
 
 class Attention_golden_model:
-    def __init__(self,token_num=8, token_dim=4, data_width=16):
+    def __init__(self, token_dim=4, token_num=8, data_width=16):
         """
         init Attention golden model
 
@@ -35,10 +35,10 @@ class Attention_golden_model:
         """
         int_bit = self.data_width/2
         frac_bit = self.data_width/2
-        if float_num > (2**(int_bit+frac_bit)-1)/2**frac_bit:
-            return (2**(int_bit+frac_bit)-1)/2**frac_bit
-        elif math.floor(float_num*(2**frac_bit)+0.5) /2**frac_bit > (2**(int_bit+frac_bit)-1)/2**frac_bit:
-            return (2**(int_bit+frac_bit)-1)/2**frac_bit
+        if float_num > (2**(int_bit+frac_bit-1)/2**frac_bit):
+            return 2**(int_bit+frac_bit)-1
+        elif math.floor(float_num*(2**frac_bit)+0.5) /2**frac_bit > (2**(int_bit+frac_bit-1)/2**frac_bit):
+            return 2**(int_bit+frac_bit)-1
         else :
             return math.floor(float_num*(2**frac_bit)+0.5) /2**frac_bit
 

@@ -1,6 +1,6 @@
 import random
 import subprocess
-
+import math
 
 # 生成一个 4x4 的 16 位二进制矩阵
 def generate_matrix(rows, cols, bit_width):
@@ -25,6 +25,13 @@ def matrix_multiply(matrix_a, matrix_b):
                 result[i][j] += matrix_a[i][k] * matrix_b[k][j]
     return result
 
+def fixed_point_quantization(float_num,int_bit,frac_bit):
+  if float_num > (2**(int_bit+frac_bit-1)/2**frac_bit):
+    return 2**(int_bit+frac_bit)-1
+  elif math.floor(float_num*(2**frac_bit)+0.5) /2**frac_bit > (2**(int_bit+frac_bit-1)/2**frac_bit):
+    return 2**(int_bit+frac_bit)-1
+  else :
+    return math.floor(float_num*(2**frac_bit)+0.5) /2**frac_bit
 # 生成两个 4x4 的 16 位二进制矩阵
 matrix_1 = generate_matrix(4, 4, 10)
 matrix_2 = generate_matrix(4, 2, 10)
@@ -66,7 +73,13 @@ for row in float_matrix_2:
 
 
 # 计算两个矩阵的乘积
-result_matrix = matrix_multiply(float_matrix_1, float_matrix_2)
+mat_matrix = matrix_multiply(float_matrix_1, float_matrix_2)
+
+print("\nMatrix Multiplication:")
+for row in mat_matrix:
+    print(row)
+
+result_matrix = [[fixed_point_quantization(bit, 8, 8) for bit in row] for row in mat_matrix]
 
 print("\nResult Matrix:")
 for row in result_matrix:

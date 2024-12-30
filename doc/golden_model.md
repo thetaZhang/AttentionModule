@@ -1,1 +1,0 @@
-# Attention golden model

@@ -42,13 +42,35 @@ FPMatMul#(
   .out(out_data)
 );
 
+integer fd, err, code;
+reg[639 : 0] str;
+
 initial begin
-  $readmemb("test_data1.txt", data_1);
-  $readmemb("test_data2.txt", data_2);
+  //$readmemb("test_data1.txt", data_1);
+  //$readmemb("test_data2.txt", data_2);
+  fd = $fopen("test_data1.txt", "r");
+  err = $ferror(fd, str);
+  if (!err) begin
+    for (integer i = 0; i < 16; i = i + 1) begin
+      code = $fscanf(fd, "%b", data_1[i]);
+    end
+  end
+
+  fd = $fopen("test_data2.txt", "r");
+  err = $ferror(fd, str);
+  if (!err) begin
+    for (integer i = 0; i < 8; i = i + 1) begin
+      code = $fscanf(fd, "%b", data_2[i]);
+    end
+  end
+
+
   #10 
   $display("out:");
   for (integer index = 0; index < 4; index = index + 1) 
-      $display("%f %f ", out_data_mat[index][0][15 : 8] + out_data_mat[index][0][7 : 0] / tmp, out_data_mat[index][1][15 : 8] + out_data_mat[index][1][7 : 0] / tmp);
+      $display("%b %b ", out_data_mat[index][0], out_data_mat[index][1]);
+  for (integer index = 0; index < 4; index = index + 1) 
+      $display("%.10f %.10f ", out_data_mat[index][0][15 : 8] + out_data_mat[index][0][7 : 0] / tmp, out_data_mat[index][1][15 : 8] + out_data_mat[index][1][7 : 0] / tmp);
   #10 $finish;
 end
 
