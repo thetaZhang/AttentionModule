@@ -24,7 +24,7 @@ Run the following command to invoke Modelsim to run the module simulation and ve
 python ./model/model_test
 ```
 
-It can automatically compare the simulation and model verification results. The output data is located in the generate directory.
+It can generate random data and automatically compare the simulation and model verification results. The output data is located in the generate directory.
 
 ## directory structure
 

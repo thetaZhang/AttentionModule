@@ -75,11 +75,11 @@ integer jndex = 0;
 integer test_times = 1;
 integer test_index = 0;
 
-integer fd_K, fd_Q, fd_V;
-integer err_K, err_Q, err_V;
-integer code_K, code_Q, code_V;
+integer fd_K, fd_Q, fd_V, fd_b, fd_f;
+integer err_K, err_Q, err_V, err_b, err_f;
+integer code_K, code_Q, code_V, code_b, code_f;
 
-reg [639 : 0] str_K, str_Q, str_V;
+reg [639 : 0] str_K, str_Q, str_V, str_b, str_f;
 
 initial begin
 
@@ -96,6 +96,10 @@ initial begin
   err_Q = $ferror(fd_Q, str_Q);
   fd_V = $fopen("./testbench/top/V_data.txt", "r");
   err_V = $ferror(fd_V, str_V);
+  fd_b = $fopen("../generate/OUT_data_module_binary.txt", "w+");
+  err_b = $ferror(fd_b, str_b);
+  fd_f = $fopen("../generate/OUT_data_module_float.txt", "w+");
+  err_f = $ferror(fd_f, str_f);
 
   for (test_index = 0; test_index <test_times + 3; test_index = test_index + 1) begin
     if (test_index < test_times) begin 
@@ -117,6 +121,9 @@ initial begin
       $write("[");
       for (jndex = 0; jndex < `TOKEN_DIM; jndex = jndex + 1)begin
         $write("%b, ",out_mat[index][jndex]);
+        if (!err_b && test_index>=3) begin 
+          $fwrite(fd_b, "%b\n", out_mat[index][jndex]);
+        end
       end
       $write("]\n");
     end
@@ -126,6 +133,9 @@ initial begin
       $write("[");
       for (jndex = 0; jndex < `TOKEN_DIM; jndex = jndex + 1)begin
         $write("%.8f, ",out_mat[index][jndex][15 : 8] + out_mat[index][jndex][7 : 0] / tmp);
+        if (!err_f && test_index>=3)begin
+            $fwrite(fd_f, "%.8f\n",out_mat[index][jndex][15 : 8] + out_mat[index][jndex][7 : 0] / tmp);
+        end
       end
       $write("]\n");
     end
@@ -149,7 +159,14 @@ initial begin
     end
     */
 
-  #5 $finish;
+
+  #5
+    $fclose(fd_K); 
+    $fclose(fd_Q);
+    $fclose(fd_V);
+    $fclose(fd_b);
+    $fclose(fd_f);
+    $finish;
 end
 
 

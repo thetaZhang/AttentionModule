@@ -17,10 +17,14 @@ print("Test Attention model")
 print("Please enter the number of test data sets:")
 test_num = int(input())
 
+Q_testset = [generate_matrix(8, 4, 15) for _ in range(test_num)]
+K_testset = [generate_matrix(8, 4, 4) for _ in range(test_num)]
+V_testset = [generate_matrix(8, 4, 9) for _ in range(test_num)]
+
 for i in range(test_num):
-    Q = generate_matrix(8, 4, 9)
-    K = generate_matrix(8, 4, 9)
-    V = generate_matrix(8, 4, 9)
+    Q = Q_testset[i]
+    K = K_testset[i]
+    V = V_testset[i]
 
     Q_vector = [bit for row in Q for bit in row]
     K_vector = [bit for row in K for bit in row]
@@ -43,21 +47,52 @@ for i in range(test_num):
             f.write(f"{num}\n")
     first_write_V = False  
 
-    attention_golden_model = Attention_golden_model(8,4,16)
-    OUT=attention_golden_model.attention_compute(Q, K, V)
-
-    print("Test data set", i+1)
-    print("Golden model output:")
-    for row in OUT:
-        print(row)
-    
-    with open("./generate/OUT_data_model.txt", "w" if first_write_V else "a") as f:
-        for num in V_vector:
-            f.write(f"{num}\n")
-    first_write_V = False  
 
 
 result = subprocess.run(["cd rtl;vlog.exe -quiet testbench/top/top_tb.v;vsim.exe -quiet -c -voptargs=+acc +test_times=%d top_tb -do \"run -all\";cd .."% test_num], shell=True)
+
+print("start golden model verification")
+
+
+with open("./generate/OUT_data_module_float.txt", 'r') as f:
+    lines = f.readlines()
+
+out = [float(line.strip()) for line in lines]
+
+OUT_testset = []
+for n in range(test_num):
+    matrix = []
+    for i in range(8):
+        row = out[n * 8 * 4 + i * 4 : n * 8 * 4 + (i + 1) * 4]
+        matrix.append(row)
+    OUT_testset.append(matrix)
+
+flag = True
+
+for i in range(test_num):
+
+    attention_golden_model = Attention_golden_model(8,4,16)
+    OUT=attention_golden_model.attention_compute(Q_testset[i], K_testset[i], V_testset[i])
+
+    print("Test data set", i+1)
+
+    print("Golden model output:")
+    for row in OUT:
+        print(row)
+
+    print("Module output:")
+    for row in OUT_testset[i]:
+        print(row)
+    
+    if OUT == OUT_testset[i]:
+        print("Test passed")
+    else:
+        print("Test failed")
+        flag = False
+
+if flag:
+    print("All tests passed")
+    
 
 
 
