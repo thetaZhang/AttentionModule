@@ -85,6 +85,7 @@ for n in range(test_num):
     OUT_testset.append(matrix)
 
 flag = True
+oversize_flag = False
 
 for i in range(test_num):
 
@@ -106,11 +107,19 @@ for i in range(test_num):
     else:
         print("Test failed")
         flag = False
+    
+    if all(x == 0.0 for row in OUT_testset[i] for x in row):
+        oversize_flag = True
 
 if flag:
     print("All tests passed")
 
     
-
+if oversize_flag:
+    print("Your input is too big!")
+    print("Too big input make too much data overflow and make all the output saturated")
+    print("All saturated output will be the same")
+    print("Same output will be 0 after simplified softmax")
+    print("Please try smaller input")
 
 

@@ -1,8 +1,10 @@
 // FPMac.v
 // Fix Point multiply accumulate module
 
-//`include "Quantization.v"
-
+/*
+`include "Quantization.v"
+`include "AdderTree.v"
+*/
 module FPMac#(
   parameter INPUT_DATA_WIDTH = 16, // half MSBs integer part, half LSBs decimal part
   parameter OUTPUT_DATA_WIDTH = 16, // half MSBs integer part, half LSBs decimal part
@@ -30,24 +32,27 @@ endgenerate
 
 // after multiplication, the data width will be doubled
 // Fix8_8 * Fix8_8 = Fix16_16
-wire [2*INPUT_DATA_WIDTH-1:0] mul_out[0:DATA_LENGTH-1];
+wire [2*INPUT_DATA_WIDTH*DATA_LENGTH-1:0] mul_out;
 
 // after accumulation, the data width will increase [log_2((DATA_LENGT)](times of add)
-wire [($clog2(DATA_LENGTH)+2*INPUT_DATA_WIDTH)-1:0] acc_scan[0:DATA_LENGTH-1];
+wire [($clog2(DATA_LENGTH)+2*INPUT_DATA_WIDTH)-1:0] acc_out;
 
-//  multiplication
+//  multiplication and accumulation
 genvar i;
 generate
   for (i = 0; i < DATA_LENGTH; i = i + 1) 
-    assign mul_out[i] = in_vec_1[i] * in_vec_2[i]; 
+    assign mul_out[2*INPUT_DATA_WIDTH*(i+1)-1:2*INPUT_DATA_WIDTH*i] = in_vec_1[i] * in_vec_2[i]; 
+  
+  AdderTree #(
+    .INPUT_DATA_WIDTH(2*INPUT_DATA_WIDTH),
+    .DATA_LENGTH(DATA_LENGTH)
+  ) AdderTreeMul(
+    .in(mul_out),
+    .out(acc_out)
+  );
+
 endgenerate
 
-// accumulation
-genvar j;
-generate
-  for (j = 0; j < DATA_LENGTH; j = j + 1) 
-    assign acc_scan[j] = (j == 0) ? mul_out[j] : acc_scan[j-1] + mul_out[j];
-endgenerate
 
 
 
@@ -58,7 +63,7 @@ Quantization #(
   .OUTPUT_INTEGER_WIDTH(OUTPUT_DATA_WIDTH/2),
   .OUTPUT_DECIMAL_WIDTH(OUTPUT_DATA_WIDTH/2)
 ) QuantizationUnit(
-  .in(acc_scan[DATA_LENGTH - 1]),
+  .in(acc_out),
   .out(out)
 );
 
