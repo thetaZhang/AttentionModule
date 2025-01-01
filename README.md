@@ -21,7 +21,7 @@ Make sure you are at the project root directory.
 Run the following command to invoke Modelsim to run the module simulation and verify  through Python golden model.
 
 ```
-python ./model/model_test
+python ./model/model_test.py
 ```
 
 It can generate random data and automatically compare the simulation and model verification results. The output data is located in the generate directory.
