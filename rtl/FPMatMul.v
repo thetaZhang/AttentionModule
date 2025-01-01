@@ -1,6 +1,6 @@
 // FPMatMul.v
 // Fix Point matrix multiplication module
-`include "FPMac.v"
+//`include "FPMac.v"
 module FPMatMul#(
   parameter INPUT_DATA_WIDTH = 16, // half MSBs integer part, half LSBs decimal part
   parameter OUTPUT_DATA_WIDTH = 16, // half MSBs integer part, half LSBs decimal part

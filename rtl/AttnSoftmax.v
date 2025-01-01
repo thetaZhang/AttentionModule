@@ -1,9 +1,10 @@
 // AttnSoftmax
 // Second stage of pipeline: softmax
 
+/*
 `include "Dff.v"
 `include "MatSoftmax.v"
-
+*/
 module AttnSoftmax#(
   parameter DATA_WIDTH = 16,
   parameter TOKEN_DIM = 4,

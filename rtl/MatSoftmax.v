@@ -1,7 +1,7 @@
 // MatSoftmax.v
 // row-wise softmax of input matrix
 
-`include "Softmax.v"
+//`include "Softmax.v"
 module MatSoftmax#(
   parameter INPUT_DATA_WIDTH = 16,
   parameter OUTPUT_DATA_WIDTH = 16,

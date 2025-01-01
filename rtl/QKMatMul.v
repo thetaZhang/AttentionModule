@@ -1,10 +1,10 @@
 // QKMatMul.v
 // First stage of pipeline: Q*K^T
-
+/*
 `include "FPMatMul.v"
 `include "Dff.v"
 `include "Transpose.v"
-
+*/
 module QKMatMul#(
   parameter DATA_WIDTH = 16,
   parameter TOKEN_DIM = 4,

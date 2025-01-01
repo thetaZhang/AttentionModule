@@ -1,9 +1,9 @@
 // Softmax.v
 // Softmax module with simplifiled function: softmax(A[i,j])=(A[i,j]-min([i,:]))^2
-
+/*
 `include "Min.v"
 `include "Quantization.v"
-
+*/
 module Softmax#(
   parameter INPUT_DATA_WIDTH = 16,
   parameter OUTPUT_DATA_WIDTH = 16,

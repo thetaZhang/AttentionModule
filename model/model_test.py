@@ -1,6 +1,7 @@
 import random
 import math
 import subprocess
+import platform
 from golden_model import Attention_golden_model
 
 def generate_matrix(rows, cols, bit_width):
@@ -48,8 +49,17 @@ for i in range(test_num):
     first_write_V = False  
 
 
+current_platform = platform.system()
 
-result = subprocess.run(["cd rtl;vlog.exe -quiet testbench/top/top_tb.v;vsim.exe -quiet -c -voptargs=+acc +test_times=%d top_tb -do \"run -all\";cd .."% test_num], shell=True)
+if current_platform == "Windows":
+    result = subprocess.run(['powershell', '-Command', "cd ./rtl;vlog.exe -quiet testbench/top/top_tb.v *.v;vsim.exe -quiet -c -voptargs=+acc +test_times=%d top_tb -do \"run -all\";cd .."% test_num], shell=True)
+elif current_platform == "Linux":
+    result = subprocess.run(["cd rtl;vlog.exe -quiet testbench/top/top_tb.v *.v;vsim.exe -quiet -c -voptargs=+acc +test_times=%d top_tb -do \"run -all\";cd .."% test_num], shell=True)
+else:
+    print(f"Unsupported platform: {current_platform}")
+
+
+
 
 print("start golden model verification")
 
@@ -92,6 +102,7 @@ for i in range(test_num):
 
 if flag:
     print("All tests passed")
+
     
 
 

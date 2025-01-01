@@ -1,6 +1,6 @@
 // top_tb.v
 `timescale 1ns/1ps
-`include "Attention_top.v"
+//`include "Attention_top.v"
 
 `define DATA_WIDTH 16
 `define TOKEN_DIM 4

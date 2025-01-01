@@ -1,7 +1,7 @@
 // FPMac.v
 // Fix Point multiply accumulate module
 
-`include "Quantization.v"
+//`include "Quantization.v"
 
 module FPMac#(
   parameter INPUT_DATA_WIDTH = 16, // half MSBs integer part, half LSBs decimal part
