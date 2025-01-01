@@ -34,6 +34,7 @@ It can generate random data and automatically compare the simulation and model v
 
 ## Directory structure
 
+```
 .
 ├── README.md
 ├── generate
@@ -55,6 +56,7 @@ It can generate random data and automatically compare the simulation and model v
     ├── Softmax.v
     ├── Transpose.v
     └── testbench
+```
 
 The verilog module source code is in the `rtl` folder, and the python golden model source code is in the `model` folder.
 
