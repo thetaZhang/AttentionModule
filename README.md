@@ -18,7 +18,13 @@ Python 3 with pytorch is also needed for the model verifiction.
 
 Make sure you are at the project root directory.
 
-Run the following command to invoke Modelsim to run the module simulation and verify  through Python golden model.
+If this is the first time you run the simulation test, run the following command to initialize.
+
+```
+python ./model/init.py
+```
+
+Then run the following command to invoke Modelsim to run the module simulation and verify  through Python golden model.
 
 ```
 python ./model/model_test.py
