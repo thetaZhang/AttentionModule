@@ -18,9 +18,16 @@ print("Test Attention model")
 print("Please enter the number of test data sets:")
 test_num = int(input())
 
-Q_testset = [generate_matrix(8, 4, 15) for _ in range(test_num)]
-K_testset = [generate_matrix(8, 4, 4) for _ in range(test_num)]
-V_testset = [generate_matrix(8, 4, 9) for _ in range(test_num)]
+print("Please enter the data bit range for the Q matrix(1~16):")
+Q_range = min(int(input()), 16)
+print("Please enter the data bit range for the K matrix(1~16):")
+K_range = min(int(input()), 16)
+print("Please enter the data bit range for the V matrix(1~16):")
+V_range = min(int(input()), 16)
+
+Q_testset = [generate_matrix(8, 4, Q_range ) for _ in range(test_num)]
+K_testset = [generate_matrix(8, 4, K_range ) for _ in range(test_num)]
+V_testset = [generate_matrix(8, 4, V_range ) for _ in range(test_num)]
 
 for i in range(test_num):
     Q = Q_testset[i]

@@ -32,9 +32,8 @@ python ./model/model_test.py
 
 It can generate random data and automatically compare the simulation and model verification results. The output data is located in the generate directory.
 
-## directory structure
+## Directory structure
 
-```
 .
 ├── README.md
 ├── generate
@@ -55,9 +54,9 @@ It can generate random data and automatically compare the simulation and model v
     ├── SVMatMul.v
     ├── Softmax.v
     ├── Transpose.v
-    ├── modelsim.ini
     └── testbench
- 
-```
 
 The verilog module source code is in the `rtl` folder, and the python golden model source code is in the `model` folder.
+
+
+For more details, see the [report](./report/report.pdf).

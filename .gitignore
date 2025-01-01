@@ -13,3 +13,5 @@ build
 *.vsdx
 
 generate
+
+project_vivado
