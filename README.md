@@ -12,7 +12,7 @@ A pipelined structure is adopted. The QK^T matrix multiplication, softmax, and S
 
 Modelsim 2019.2 should be added to the system environment variables PATH.
 
-Python 3 with pytorch is also needed for the model verifiction.
+Python 3 with [pytorch](https://pytorch.org/get-started/locally/) is also needed for the model verifiction.
 
 ### Run simulation script
 
